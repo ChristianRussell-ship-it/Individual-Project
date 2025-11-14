@@ -57,9 +57,9 @@ Step 4 - Weekly Summary Generation Through:
 - this type of crime went up 10%
 
 # 4. Project Schedule 
-Week 1: Experiment with a certain Neighborhood and test API
-Week 2: Clean the data and store the data
-Week 3-4: Start generating the graphs and visualizations and maybe show the results on a website using flask
+- Week 1: Experiment with a certain Neighborhood and test API
+- Week 2: Clean the data and store the data
+- Week 3-4: Start generating the graphs and visualizations and maybe show the results on a website using flask
 
 # 5. Collaboration:
 - I will be working by myself
