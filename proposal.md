@@ -1,6 +1,6 @@
 
 
-1. The Big Idea
+# 1. The Big Idea
 
 Crime News/Data detection  
 
@@ -25,12 +25,12 @@ Stretch Goals:
 - Build a small web interface (Flask or Streamlit) to display live risk summaries.
 - Detect crime spikes (e.g., “vehicle thefts up 30% this week”) and flag anomalies.
 
-2. Learning Objectives:
+# 2. Learning Objectives:
 - Gain proficiency working with real APIs (authentication, parameters, rate limits).
 - Handle structured JSON data and convert it into usable forms for analysis.
 - Be more familiar with Python libraries
 
-3. Implementation Plan
+# 3. Implementation Plan
 Step 1: API familiarity (Test the API usage)
 Learning how to use the data:
 Ex.
@@ -53,23 +53,23 @@ Other crimes
 Step 4 - Weekly Summary Generation Through:
 - Graphs 
 - Charts 
-- # of a certain crime 
+- number of a certain crime 
 - this type of crime went up 10%
 
-4. Project Schedule 
+# 4. Project Schedule 
 Week 1: Experiment with a certain Neighborhood and test API
 Week 2: Clean the data and store the data
 Week 3-4: Start generating the graphs and visualizations and maybe show the results on a website using flask
 
-5. Collaboration:
+# 5. Collaboration:
 - I will be working by myself
 
-6. Risks and Limitations:
+# 6. Risks and Limitations:
 - Unfamiliarity with new API
 - How to make use of the Latitude and Longitude 
 - Hard to vizualize the data 
 
-7. Additional Course Content:
+# 7. Additional Course Content:
 - Python analysis tools (Pandas, datetime)
 - Maybe Matplotlib, Plotly
 
