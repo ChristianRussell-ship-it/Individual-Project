@@ -1,0 +1,43 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hate Crime Trends Explorer</title>
+</head>
+<body>
+    <h1>Hate Crime Trends Explorer</h1>
+    <p>
+        Use this tool to explore yearly hate-crime rates using FBI Crime Data Explorer.
+    </p>
+
+    <form method="POST">
+        <label for="state">State:</label>
+        <select id="state" name="state">
+            <!-- You can add more states later -->
+            <option value="MA">Massachusetts (MA)</option>
+            <option value="CA">California (CA)</option>
+            <option value="NY">New York (NY)</option>
+            <option value="TX">Texas (TX)</option>
+        </select>
+        <br><br>
+
+        <label for="start_year">Start year:</label>
+        <input id="start_year" name="start_year" type="number" value="2000" min="1991" max="2020">
+        <br><br>
+
+        <label for="end_year">End year:</label>
+        <input id="end_year" name="end_year" type="number" value="2010" min="1991" max="2025">
+        <br><br>
+
+        <label for="graph_type">Graph type:</label>
+        <select id="graph_type" name="graph_type">
+            <option value="state_trend">State trend (line chart)</option>
+            <option value="state_vs_us">State vs United States</option>
+        </select>
+        <br><br>
+
+        <button type="submit">Show Graph</button>
+    </form>
+</body>
+</html>

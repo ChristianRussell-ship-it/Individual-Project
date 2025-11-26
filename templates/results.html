@@ -1,0 +1,31 @@
+<!-- templates/results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hate Crime Results</title>
+</head>
+<body>
+    <h1>Results</h1>
+
+    <p>
+        <a href="{{ url_for('index') }}">&#8592; Back to search</a>
+    </p>
+
+    <img src="{{ url_for('static', filename=plot_filename) }}"
+         alt="Crime trend graph"
+         style="max-width: 800px; width: 100%; border: 1px solid #ccc;">
+
+    <h2>Summary</h2>
+    <ul>
+        <li>State: <strong>{{ summary.state }}</strong></li>
+        <li>Years covered: <strong>{{ summary.start_year }}–{{ summary.end_year }}</strong></li>
+        <li>Highest rate: <strong>{{ summary.max_rate }}</strong> in {{ summary.max_year }}</li>
+        <li>Lowest rate: <strong>{{ summary.min_rate }}</strong> in {{ summary.min_year }}</li>
+        <li>Change over period: 
+            <strong>{{ summary.change_pct }}%</strong>
+            ({{ 'increase' if summary.change_pct >= 0 else 'decrease' }})
+        </li>
+    </ul>
+</body>
+</html>
