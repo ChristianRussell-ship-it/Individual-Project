@@ -2,28 +2,26 @@
 
 # 1. The Big Idea
 
-Crime News/Data detection  
+My project is a full Flask web application called Hate Crime Trends Explorer. It allows users to:
+- Select a U.S. state
+- Enter a start year and end year
+- Choose a graph type (state trend vs. state vs. U.S.)
+- View a summary of hate-crime trends over time
 
-Main idea is to use real-time incident-level crime data to help people understand the safety risks in their local area. Important crime and safety signals are often scattered across police logs, public dashboards, and news sites. A typical resident might have a hard time to manually track these sources, and risk patterns are often missed. Since they have different times and locations. This will hopefully result in a clear snapshot of what is happening around them.
+The application pulls real data from the FBI Crime Data Explorer API, processes it, and presents it through a clean, user-friendly interface. The purpose of this project is to pull data from the FBI's data source to create meaningful graphs about public safety and historical changes in hate-crime activity from each state.
 
 My MVP:
-- Make authenticated API requests to CrimeoMeter using x-api-key.
-- Pull all crime incidents for a chosen neighborhood (based on lat/lon + radius).
-Categorize crimes into:
--   Property
--   Violent
--   Drug-related
--   incident date/time
--   crime type (e.g., Motor Vehicle Theft)
--   offense category (Property, Person, Society)
--   detailed narrative
--   lat/long coordinates
+A functioning Flask web application to pull all crime incidents for a chosen state
+- Graph 
+- Pulls data from FBI reports 
+- Has a start and end year 
+- Add real U.S. national averages to “State vs U.S.” charts
 
 Stretch Goals:
-- Develop a Neighborhood Risk Score (0–100 scale) based on incident type, frequency, and severity.
+- Develop a Risk Score (0–100 scale) based on incident type, frequency, and severity.
 - Add visualizations (bar charts, line charts, or maps).
-- Build a small web interface (Flask or Streamlit) to display live risk summaries.
-- Detect crime spikes (e.g., “vehicle thefts up 30% this week”) and flag anomalies.
+- 
+- Detect crime spikes and flag anomalies.
 
 # 2. Learning Objectives:
 - Gain proficiency working with real APIs (authentication, parameters, rate limits).
@@ -31,45 +29,66 @@ Stretch Goals:
 - Be more familiar with Python libraries
 
 # 3. Implementation Plan
-Step 1: API familiarity (Test the API usage)
-Learning how to use the data:
-Ex.
-("incident_offense": "Motor Vehicle Theft",
-"incident_offense_crime_against": "Property",
-"incident_latitude": 41.9751781,
-"incident_longitude": -87.6499609,
-"incident_date": "2024-01-12T21:00:00Z")
+Step 1: 1. Construct Correct CRIME API URLs from FBI data
 
-Step 2 — Data Cleaning & Storage
-- Convert timestamps to understandable format
-- Save normalized data
+The FBI API requires:
+- A state abbreviation
+- A date format (MM-YYYY)
+- A type parameter (counts)
+- A functioning API key 
 
-Step 3 — Crime Categorization:
-Property crime
-Violent crime
-Drug/overdose-related crime
-Other crimes
+Step 2 — Data Processing 
+Extract Single-Year Incidents
+- The FBI API returns each year as a list inside "results".
+- Missing or malformed data becomes None
+- Only the correct fields are pulled: "data_year" and "value"
 
-Step 4 - Weekly Summary Generation Through:
-- Graphs 
-- Charts 
-- number of a certain crime 
-- this type of crime went up 10%
+Step 3 — Web Application Layer app.py
+- Use GET to Load:
+    - A list of states
+    - And Renders index.html 
+
+- Use POST to: 
+    - Pull values from the form
+    - Validates input (state, years, graph type)
+    - Calls backend functions if everything is valid
+    - Redirects user to results view with a generated plot
+
+Step 4 Account for Validation
+- Required fields are present:
+    - If either start or end year is empty then return error
+- Logical constraints:
+    - Start year ≠ end year
+    - End year has to be greater than start year
+
+Step 5 Summary Statistics Computation
+- Maximum yearly ratew
+- Minimum yearly rate
+- Percent change (start → end)
+- First and last year in the dataset
+- Overall trend direction
+
 
 # 4. Project Schedule 
-- Week 1: Experiment with a certain Neighborhood and test API
+- Week 1: Experiment with a certain State and test API
 - Week 2: Clean the data and store the data
-- Week 3-4: Start generating the graphs and visualizations and maybe show the results on a website using flask
+- Week 3-4: Start generating the graphs and visualizations and show the results on a website using flask
 
 # 5. Collaboration:
 - I will be working by myself
 
 # 6. Risks and Limitations:
 - Unfamiliarity with new API
-- How to make use of the Latitude and Longitude 
-- Hard to vizualize the data 
+- The FBI Crime Data Explorer API responds very slowly
+- Temporarily go offline for maintenance
+
+Because this project fully depends on the API, any downtime or irregular response format affects the app’s ability to fetch accurate results, which can cause the graph to:
+
+- Fail to generate if required data is missing
+- Some states may show gaps in data from missing records
 
 # 7. Additional Course Content:
 - Python analysis tools (Pandas, datetime)
 - Maybe Matplotlib, Plotly
+- Make the UI look more user friendly using bootstrap
 

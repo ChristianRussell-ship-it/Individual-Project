@@ -72,3 +72,84 @@ def fetch_raw_response(state, start_year, end_year):
         f"?type=counts&from={start}&to={end}&API_KEY={API_KEY}"
     )
     return fetch_with_retry(url)
+
+# --- NEW: get list of states for the dropdown --------------------
+def get_state_choices():
+    """
+    Return a list of (abbr, name) for U.S. states.
+    Tries FBI API first; if that fails, uses a local fallback list.
+    """
+    if not API_KEY:
+        print("Warning: FBI_API_KEY missing, using local state list.")
+    else:
+        try:
+            url = f"https://api.usa.gov/crime/fbi/cde/hate-crime/states?API_KEY={API_KEY}"
+            data = fetch_with_retry(url)
+            states = []
+            # This part is defensive because we don't know the exact JSON layout
+            for item in data.get("states", []):
+                abbr = item.get("state_abbr") or item.get("abbr")
+                name = item.get("state_name") or item.get("name")
+                if abbr and name:
+                    states.append((abbr, name))
+            if states:
+                # sort alphabetically by name
+                return sorted(states, key=lambda x: x[1])
+        except Exception as e:
+            print("Could not fetch state list from FBI API, using fallback. Error:", e)
+
+    # Fallback: full list of states + DC (works even with no internet)
+    fallback_states = [
+        ("AL", "Alabama"),
+        ("AK", "Alaska"),
+        ("AZ", "Arizona"),
+        ("AR", "Arkansas"),
+        ("CA", "California"),
+        ("CO", "Colorado"),
+        ("CT", "Connecticut"),
+        ("DE", "Delaware"),
+        ("FL", "Florida"),
+        ("GA", "Georgia"),
+        ("HI", "Hawaii"),
+        ("ID", "Idaho"),
+        ("IL", "Illinois"),
+        ("IN", "Indiana"),
+        ("IA", "Iowa"),
+        ("KS", "Kansas"),
+        ("KY", "Kentucky"),
+        ("LA", "Louisiana"),
+        ("ME", "Maine"),
+        ("MD", "Maryland"),
+        ("MA", "Massachusetts"),
+        ("MI", "Michigan"),
+        ("MN", "Minnesota"),
+        ("MS", "Mississippi"),
+        ("MO", "Missouri"),
+        ("MT", "Montana"),
+        ("NE", "Nebraska"),
+        ("NV", "Nevada"),
+        ("NH", "New Hampshire"),
+        ("NJ", "New Jersey"),
+        ("NM", "New Mexico"),
+        ("NY", "New York"),
+        ("NC", "North Carolina"),
+        ("ND", "North Dakota"),
+        ("OH", "Ohio"),
+        ("OK", "Oklahoma"),
+        ("OR", "Oregon"),
+        ("PA", "Pennsylvania"),
+        ("RI", "Rhode Island"),
+        ("SC", "South Carolina"),
+        ("SD", "South Dakota"),
+        ("TN", "Tennessee"),
+        ("TX", "Texas"),
+        ("UT", "Utah"),
+        ("VT", "Vermont"),
+        ("VA", "Virginia"),
+        ("WA", "Washington"),
+        ("WV", "West Virginia"),
+        ("WI", "Wisconsin"),
+        ("WY", "Wyoming"),
+        ("DC", "District of Columbia"),
+    ]
+    return sorted(fallback_states, key=lambda x: x[1])

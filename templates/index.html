@@ -3,41 +3,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hate Crime Trends Explorer</title>
+    <title>Hate Crime Explorer</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        body {
+            background-color: #f5f7fa;
+            padding: 40px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .container-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        .btn-primary {
+            width: 200px;
+            display: block;
+            margin: 20px auto 0 auto;
+        }
+    </style>
 </head>
 <body>
+<div class="container container-box">
+
     <h1>Hate Crime Trends Explorer</h1>
-    <p>
-        Use this tool to explore yearly hate-crime rates using FBI Crime Data Explorer.
+    <p class="text-center text-muted mb-4">
+        Explore historical hate-crime rates using FBI Crime Data Explorer.
     </p>
 
+    <!-- Optional server-side validation message -->
+    {% if error %}
+      <div class="alert alert-warning mb-4" role="alert">
+        {{ error }}
+      </div>
+    {% endif %}
+
     <form method="POST">
-        <label for="state">State:</label>
-        <select id="state" name="state">
-            <!-- You can add more states later -->
-            <option value="MA">Massachusetts (MA)</option>
-            <option value="CA">California (CA)</option>
-            <option value="NY">New York (NY)</option>
-            <option value="TX">Texas (TX)</option>
-        </select>
-        <br><br>
 
-        <label for="start_year">Start year:</label>
-        <input id="start_year" name="start_year" type="number" value="2000" min="1991" max="2020">
-        <br><br>
+        <!-- STATE DROPDOWN (dynamic list + required) -->
+        <div class="mb-3">
+            <label class="form-label" for="state">State</label>
+            <select id="state" name="state" class="form-select" required>
+                {% for abbr, name in states %}
+                    <option value="{{ abbr }}"
+                        {% if form_values and form_values.state == abbr %}selected{% endif %}>
+                        {{ name }} ({{ abbr }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <label for="end_year">End year:</label>
-        <input id="end_year" name="end_year" type="number" value="2010" min="1991" max="2025">
-        <br><br>
+        <!-- YEARS (one input each, side by side) -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="start_year">Start Year</label>
+                <input type="number"
+                       name="start_year"
+                       id="start_year"
+                       class="form-control"
+                       min="1990"
+                       max="2025"
+                       required
+                       value="{{ form_values.start_year if form_values else '' }}">
+            </div>
 
-        <label for="graph_type">Graph type:</label>
-        <select id="graph_type" name="graph_type">
-            <option value="state_trend">State trend (line chart)</option>
-            <option value="state_vs_us">State vs United States</option>
-        </select>
-        <br><br>
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="end_year">End Year</label>
+                <input type="number"
+                       name="end_year"
+                       id="end_year"
+                       class="form-control"
+                       min="1991"
+                       max="2025"
+                       required
+                       value="{{ form_values.end_year if form_values else '' }}">
+            </div>
+        </div>
 
-        <button type="submit">Show Graph</button>
+        <!-- GRAPH TYPE -->
+        <div class="mb-3">
+            <label class="form-label" for="graph_type">Graph Type</label>
+            <select name="graph_type" id="graph_type" class="form-select" required>
+                <option value="state_trend"
+                    {% if not form_values or form_values.graph_type == 'state_trend' %}selected{% endif %}>
+                    State trend (line chart)
+                </option>
+                <option value="state_vs_us"
+                    {% if form_values and form_values.graph_type == 'state_vs_us' %}selected{% endif %}>
+                    State vs U.S.
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Show Graph</button>
+
     </form>
+</div>
 </body>
 </html>
